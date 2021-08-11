@@ -1,16 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { Col, Row, Card } from 'reactstrap';
 import MapContainer from "./MapContainer";
 import WeatherContainer from "./WeatherContainer";
+import LandingPage from './LandingPage';
 
 const weatherApiKey = process.env.REACT_APP_WEATHER_API_KEY;
 
 function MainComponent() {
-    const [query, setQuery] = useState("Chicago");
+    const [query, setQuery] = useState("");
     const [weather, setWeather] = useState({});
-
-    // useEffect(() => {
-    //     defaultLocation();
-    // });
+    const [display, setDisplay] = useState(true)
 
     const defaultLocation = () => {
         fetch(`https://api.weatherapi.com/v1/forecast.json?key=${weatherApiKey}${query}&days=3&aqi=no`)
@@ -21,26 +20,37 @@ function MainComponent() {
             });
     };
 
-    const getLocation = (evt) => {
-        if (evt.key === "Enter") {defaultLocation()};
-    };
+    const getLocation = () => {defaultLocation(); setDisplay(false); }
 
-    return (
-        <div>
-            <div>
-                <input 
+    const searchBar = () => {
+        return (
+            <input 
                 type="text" 
                 className="searchLocation" 
                 placeholder="City, State or Zip Code"
                 onChange={evt => setQuery(evt.target.value)}
                 value={query}
-                onKeyPress={getLocation}
-                />
-            </div>
-            <div>
-            <MapContainer weather={weather}/>
-            </div>
-            <WeatherContainer weather={weather}/>
+                onKeyPress={(evt) => evt.key === "Enter" ? getLocation() : null}
+                
+            />
+        );
+    };
+
+    return (
+        <div>
+            {display ? <LandingPage searchBar={searchBar}/> : null}
+            <Row>
+                <Col>
+                    <MapContainer weather={weather}/>
+                </Col>
+                <Col lg="3">
+                    {!display ? 
+                        <Card>
+                            <WeatherContainer weather={weather} searchBar={searchBar}/>
+                        </Card> : null
+                    }
+                </Col>
+            </Row>
         </div>
     )
     

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-const weekdays = new Array([
+const weekdays = [
     "Sunday",
     "Monday",
     "Tuesday",
@@ -8,7 +8,7 @@ const weekdays = new Array([
     "Thursday",
     "Friday",
     "Saturday"
-]);
+];
 
 const currDate = new Date();
 let nextDay = currDate.getDay() + 1;
@@ -29,13 +29,16 @@ if (currDate.getDay() === 6) {
 };
 
 class WeatherContainer extends Component {
-  
+
     render() {
         return (
             <div>
             {(typeof this.props.weather.location != "undefined") ? ( 
             <div className="weatherInfo">
                 <div className="currentWeather">
+                    <div className="searchBar">
+                        {this.props.searchBar()}
+                    </div>
                     <ul className="headerInfo">
                         <li className="nowDate">{currDate.toDateString()}</li>
                         <li className="yourLocation">{this.props.weather.location.name}, {this.props.weather.location.region}</li>
@@ -71,7 +74,7 @@ class WeatherContainer extends Component {
                         <dt id="day2Temp">{this.props.weather.forecast.forecastday[1].day.mintemp_f}/{this.props.weather.forecast.forecastday[1].day.maxtemp_f}</dt>
                         <dd id="day2Date">{weekdays[nextDay2]}</dd>
                     </dl>
-                    <dl className="fullSummary">
+                    <dl className="bottomOfSummary">
                         <img src={this.props.weather.forecast.forecastday[2].day.condition.icon} id="day3Img" alt="day3Img"></img>
                         <dt id="day3Temp">{this.props.weather.forecast.forecastday[2].day.mintemp_f}/{this.props.weather.forecast.forecastday[2].day.maxtemp_f}</dt>
                         <dd id="day3Date">{weekdays[nextDay3]}</dd>

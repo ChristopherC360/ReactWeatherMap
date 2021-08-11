@@ -5,29 +5,23 @@ const mapsApiKey = process.env.REACT_APP_MAP_API_KEY;
 
 function MapContainer(props) {
 
-
     return (
-        <div>
+        <div style={{ height: '100vh', width: '70%' }}>
             {(typeof props.weather.location != "undefined") ? (
             <Map
                 google={props.google}
-                zoom={11}
-                style={mapStyles}
-                initialCenter={
+                zoom={12}
+                center={
                 {
                     lat: props.weather.location.lat,
                     lng: props.weather.location.lon
                 }
                 }
+                style={{ height: '98vh', width: '75vw' }}
             />
             ) : (<div/>)}
         </div>
     );
 }
-
-const mapStyles = {
-    width: '25%',
-    height: '100%'
-};
 
 export default GoogleApiWrapper({apiKey: `${mapsApiKey}`})(MapContainer);
